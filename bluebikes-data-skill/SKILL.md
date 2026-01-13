@@ -7,6 +7,8 @@ description: Query and analyze BlueBikes bikeshare trip data. Use when the user 
 
 This skill enables querying BlueBikes bikeshare data stored in Parquet files.
 
+The skill includes pre-processed data for 2024 and 2025.
+
 **Repository:** https://github.com/NewtonCivicDataHackers/bluebikes-data
 
 **Download latest skill:** https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
@@ -175,6 +177,32 @@ WHERE start_station_id != end_station_id
 GROUP BY station_a, station_b
 ORDER BY total_trips DESC
 LIMIT 20;
+```
+
+### Querying Across Years
+
+DuckDB can query multiple years using glob patterns:
+
+```sql
+-- All trips from all years
+SELECT * FROM 'assets/*-trips.parquet' LIMIT 10;
+
+-- Year-over-year comparison
+SELECT
+    YEAR(started_at) as year,
+    start_municipality,
+    COUNT(*) as trips
+FROM 'assets/*-trips.parquet'
+GROUP BY year, start_municipality
+ORDER BY year, trips DESC;
+
+-- Station growth between years
+SELECT
+    YEAR(started_at) as year,
+    COUNT(*) as total_trips,
+    COUNT(DISTINCT start_station_id) as active_stations
+FROM 'assets/*-trips.parquet'
+GROUP BY year;
 ```
 
 ## Python with DuckDB
