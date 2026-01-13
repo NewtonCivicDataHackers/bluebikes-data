@@ -8,20 +8,18 @@ This repository contains tools for downloading, processing, and analyzing [BlueB
 
 ## Installing as a Claude Code Skill
 
-To use this skill with [Claude Code](https://claude.ai/code), install it to your personal skills directory:
+To use this skill with [Claude Code](https://claude.ai/code), download and install to your personal skills directory:
 
 ```bash
-# Clone the repository
-git clone https://github.com/NewtonCivicDataHackers/bluebikes-data.git
-
-# Install to personal skills (available in all projects)
-rsync -av bluebikes-data/bluebikes-data-skill/ ~/.claude/skills/bluebikes-data-skill/
+curl -L -o /tmp/bluebikes-data-skill.skill https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
+unzip -o /tmp/bluebikes-data-skill.skill -d ~/.claude/skills/
 ```
 
 Or install as a project-level skill (shared with team via git):
 
 ```bash
-rsync -av bluebikes-data/bluebikes-data-skill/ .claude/skills/bluebikes-data-skill/
+curl -L -o /tmp/bluebikes-data-skill.skill https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
+unzip -o /tmp/bluebikes-data-skill.skill -d .claude/skills/
 ```
 
 Verify the skill is loaded by asking Claude "What skills are available?" or invoking it directly with `/bluebikes-data-skill`.
