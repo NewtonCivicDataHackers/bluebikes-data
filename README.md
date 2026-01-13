@@ -54,6 +54,8 @@ All analysis scripts are in the `scripts/` directory:
 - **aggregate.py**: Analyzes trip data with two modes:
   - `--stations`: Analyzes metrics for individual stations (departures/arrivals)
   - `--station-pairs`: Analyzes metrics between station pairs in both directions
+- **augment.py**: Enriches trip data with municipality names and formatted station names
+- **parquet2csv.py**: Converts Parquet files to CSV for tools like kepler.gl
 
 ## Requirements & Setup
 
