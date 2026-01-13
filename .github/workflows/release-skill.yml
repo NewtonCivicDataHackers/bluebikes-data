@@ -17,10 +17,10 @@ jobs:
 
       - name: Package skill
         run: |
-          zip -r bluebikes-data-skill.skill bluebikes-data-skill/
+          zip -r bluebikes-data-skill.zip bluebikes-data-skill/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: bluebikes-data-skill.skill
+          files: bluebikes-data-skill.zip
           generate_release_notes: true

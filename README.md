@@ -6,22 +6,22 @@ The skill includes pre-processed data for 2024 and 2025.
 
 **Repository:** https://github.com/NewtonCivicDataHackers/bluebikes-data
 
-**Download latest skill:** https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
+**Download latest skill:** https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.zip
 
 ## Installing as a Claude Code Skill
 
 To use this skill with [Claude Code](https://claude.ai/code), download and install to your personal skills directory:
 
 ```bash
-curl -L -o /tmp/bluebikes-data-skill.skill https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
-unzip -o /tmp/bluebikes-data-skill.skill -d ~/.claude/skills/
+curl -L -o /tmp/bluebikes-data-skill.zip https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.zip
+unzip -o /tmp/bluebikes-data-skill.zip -d ~/.claude/skills/
 ```
 
 Or install as a project-level skill (shared with team via git):
 
 ```bash
-curl -L -o /tmp/bluebikes-data-skill.skill https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
-unzip -o /tmp/bluebikes-data-skill.skill -d .claude/skills/
+curl -L -o /tmp/bluebikes-data-skill.zip https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.zip
+unzip -o /tmp/bluebikes-data-skill.zip -d .claude/skills/
 ```
 
 Verify the skill is loaded by asking Claude "What skills are available?" or invoking it directly with `/bluebikes-data-skill`.

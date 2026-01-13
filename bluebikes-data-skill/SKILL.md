@@ -11,7 +11,7 @@ The skill includes pre-processed data for 2024 and 2025.
 
 **Repository:** https://github.com/NewtonCivicDataHackers/bluebikes-data
 
-**Download latest skill:** https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
+**Download latest skill:** https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.zip
 
 ## Data Files
 
