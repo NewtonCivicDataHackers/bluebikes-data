@@ -7,6 +7,10 @@ description: Query and analyze BlueBikes bikeshare trip data. Use when the user 
 
 This skill enables querying BlueBikes bikeshare data stored in Parquet files.
 
+**Repository:** https://github.com/NewtonCivicDataHackers/bluebikes-data
+
+**Download latest skill:** https://github.com/NewtonCivicDataHackers/bluebikes-data/releases/latest/download/bluebikes-data-skill.skill
+
 ## Data Files
 
 Look in `assets/` for Parquet files following this naming convention:
