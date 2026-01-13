@@ -15,16 +15,12 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Get version from tag
-        id: version
-        run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
-
       - name: Package skill
         run: |
-          zip -r bluebikes-data-skill-${{ steps.version.outputs.version }}.skill bluebikes-data-skill/
+          zip -r bluebikes-data-skill.skill bluebikes-data-skill/
 
       - name: Create Release
         uses: softprops/action-gh-release@v2
         with:
-          files: bluebikes-data-skill-${{ steps.version.outputs.version }}.skill
+          files: bluebikes-data-skill.skill
           generate_release_notes: true
