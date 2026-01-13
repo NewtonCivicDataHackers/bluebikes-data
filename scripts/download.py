@@ -114,9 +114,15 @@ def stream_bluebikes_data(start_date_str, end_date_str=None):
     while current_date <= end_date:
         filename = f"{current_date.year}{current_date.month:02d}-bluebikes-tripdata.zip"
         url = base_url + filename
-        
+
         try:
-            response = urlopen(url)
+            try:
+                response = urlopen(url)
+            except Exception:
+                # Fallback: some months use .csv.zip extension
+                filename = f"{current_date.year}{current_date.month:02d}-bluebikes-tripdata.csv.zip"
+                url = base_url + filename
+                response = urlopen(url)
             zip_data = BytesIO(response.read())
             
             with zipfile.ZipFile(zip_data) as zip_file:

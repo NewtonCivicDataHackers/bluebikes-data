@@ -20,6 +20,7 @@ Features:
 # requires-python = ">=3.6"
 # dependencies = [
 #   "argparse",
+#   "pyarrow",
 # ]
 # ///
 
@@ -183,15 +184,59 @@ def format_metric(bidir, fwd, rev, suffix="", round_digits=1):
 def compute_weighted_average(total_sum, count):
     """
     Compute weighted average, handling zero division.
-    
+
     Args:
         total_sum (float): Sum of values
         count (int): Number of items
-        
+
     Returns:
         float: Computed average or 0.0 if count is zero
     """
     return total_sum / count if count > 0 else 0.0
+
+def write_output(rows, fieldnames, output_path):
+    """
+    Write output data to file or stdout.
+
+    Format is detected from file extension:
+    - .parquet: Write as Parquet file using pyarrow
+    - .csv or None: Write as CSV
+
+    Args:
+        rows (list): List of row dictionaries
+        fieldnames (list): Column names in order
+        output_path (str): Output file path, or None for stdout
+    """
+    if output_path and output_path.endswith('.parquet'):
+        import pyarrow as pa
+        import pyarrow.parquet as pq
+
+        # Define column types for parquet
+        float_cols = {'latitude', 'longitude', 'start_lat', 'start_lng', 'end_lat', 'end_lng'}
+
+        columns = {}
+        for field in fieldnames:
+            values = [row.get(field, '') for row in rows]
+            if field in float_cols:
+                # Convert coordinate strings to floats
+                columns[field] = pa.array(
+                    [float(v) if v else None for v in values],
+                    type=pa.float64()
+                )
+            else:
+                # Let pyarrow infer type from Python values
+                columns[field] = values
+
+        table = pa.Table.from_pydict(columns)
+        pq.write_table(table, output_path, compression='zstd', compression_level=19)
+    else:
+        # Write CSV to file or stdout
+        output_file = open(output_path, 'w', newline='') if output_path else sys.stdout
+        writer = csv.DictWriter(output_file, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+        if output_path:
+            output_file.close()
 
 # Station stats class for station-level analysis
 class StationStats:
@@ -320,12 +365,12 @@ def analyze_stations(avg_coords, rows):
         'classic_bike_duration_avg_bidir', 'classic_bike_duration_avg'
     ]
     
-    writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames)
-    writer.writeheader()
-    
-    # Sort and write data
+    # Collect output rows
+    output_rows = []
+
+    # Sort and process data
     sorted_stations = sorted(stations.items())
-    
+
     for station_id, stats in sorted_stations:
         trip_count_bidir = stats.trip_count_fwd + stats.trip_count_rev
         total_electric = stats.electric_count_fwd + stats.electric_count_rev
@@ -407,7 +452,9 @@ def analyze_stations(avg_coords, rows):
             'classic_bike_duration_avg_bidir': round(c_duration_bidir, 1),
             'classic_bike_duration_avg': format_metric(c_duration_bidir, c_duration_fwd, c_duration_rev)
         }
-        writer.writerow(row)
+        output_rows.append(row)
+
+    return fieldnames, output_rows
 
 def analyze_station_pairs(avg_coords, rows):
     """
@@ -518,10 +565,10 @@ def analyze_station_pairs(avg_coords, rows):
         'classic_bike_duration_avg_bidir', 'classic_bike_duration_avg'
     ]
     
-    writer = csv.DictWriter(sys.stdout, fieldnames=fieldnames)
-    writer.writeheader()
-    
-    # Sort and write data
+    # Collect output rows
+    output_rows = []
+
+    # Sort and process data
     sorted_pairs = sorted(pairs.items(), key=lambda x: (
         sort_id_by_n_and_alpha(x[0][0]),
         sort_id_by_n_and_alpha(x[0][1])
@@ -614,7 +661,9 @@ def analyze_station_pairs(avg_coords, rows):
             'classic_bike_duration_avg_bidir': round(c_duration_bidir, 1),
             'classic_bike_duration_avg': format_metric(c_duration_bidir, c_duration_fwd, c_duration_rev)
         }
-        writer.writerow(row)
+        output_rows.append(row)
+
+    return fieldnames, output_rows
 
 def main():
     """
@@ -632,21 +681,29 @@ def main():
         help='Analyze data by individual station'
     )
     group.add_argument(
-        '--station-pairs', 
+        '--station-pairs',
         action='store_true',
         help='Analyze data by station pairs'
     )
-    
+
+    parser.add_argument(
+        '-o', '--output',
+        help='Output file path. Format detected from extension (.csv or .parquet). Defaults to stdout as CSV.'
+    )
+
     args = parser.parse_args()
     
     # Compute station coordinates (shared code for both analysis types)
     avg_coords, rows = compute_station_coordinates()
-    
+
     # Run the appropriate analysis based on command line arguments
     if args.stations:
-        analyze_stations(avg_coords, rows)
+        fieldnames, output_rows = analyze_stations(avg_coords, rows)
     elif args.station_pairs:
-        analyze_station_pairs(avg_coords, rows)
+        fieldnames, output_rows = analyze_station_pairs(avg_coords, rows)
+
+    # Write output
+    write_output(output_rows, fieldnames, args.output)
 
 if __name__ == "__main__":
     main()
