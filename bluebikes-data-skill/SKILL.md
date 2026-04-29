@@ -7,7 +7,7 @@ description: Query and analyze BlueBikes bikeshare trip data. Use when the user 
 
 This skill enables querying BlueBikes bikeshare data stored in Parquet files.
 
-This data is packaged as a Claude Code skill to allow AI Agents to search and query this data based on natural language questions. The trip data is stored in parquet files for maximum compression and efficiency. The data includes trips from 2024 and 2025.
+This data is packaged as a Claude Code skill to allow AI Agents to search and query this data based on natural language questions. The trip data is stored in parquet files for maximum compression and efficiency. The data includes trips from 2024, 2025, and 2026 (through March).
 
 **Repository:** https://github.com/NewtonCivicDataHackers/bluebikes-data
 
@@ -22,6 +22,8 @@ Look in `assets/` for Parquet files following this naming convention:
 - `{year}-station-pairs.parquet` — Station pair aggregated statistics
 
 Example: `2025-trips.parquet`, `2025-stations.parquet`, `2025-station-pairs.parquet`
+
+Available years: 2024 (full year), 2025 (full year), 2026 (Jan-Mar only)
 
 ## Schemas
 
