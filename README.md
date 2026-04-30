@@ -2,7 +2,7 @@
 
 This repository contains tools for downloading, processing, and analyzing [BlueBikes](https://www.bluebikes.com/) bikeshare data, with a focus on Newton, Massachusetts stations. Trip data is sourced from the official [BlueBikes System Data](https://bluebikes.com/system-data) page.
 
-This data is packaged as a Claude Code skill to allow AI Agents to search and query this data based on natural language questions. The trip data is stored in parquet files for maximum compression and efficiency. The data includes trips from 2024 and 2025.
+This data is packaged as a Claude Code skill to allow AI Agents to search and query this data based on natural language questions. The trip data is stored in parquet files for maximum compression and efficiency. The data includes trips from 2024, 2025, and 2026 (through March).
 
 **Repository:** https://github.com/NewtonCivicDataHackers/bluebikes-data
 
